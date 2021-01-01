@@ -41,6 +41,11 @@ COPY --from=python-deps /root/.local /root/.local
 COPY . /freqtrade/
 RUN pip install -e . --no-cache-dir \
   && mkdir /freqtrade/user_data/
+
+# Set Strategy
+RUN curl -LJO https://github.com/freqtrade/freqtrade-strategies/raw/master/user_data/strategies/Strategy005.py
+RUN cp Strategy005.py /freqtrade/user_data/
+
 ENTRYPOINT ["freqtrade"]
 # Default to trade mode
-CMD [ "trade" ]
+CMD [ "trade --strategy Strategy005" ]
